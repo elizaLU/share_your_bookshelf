@@ -8,10 +8,11 @@ const {
   GraphQLString,
   GraphQLSchema,
   GraphQLInt,
-  GraphQLID
+  GraphQLID,
+  GraphQLList
 } = graphql;
 
-//object type:
+//object types:
 const BookType = new GraphQLObjectType({
   name: "Book",
   fields: () => ({
@@ -19,9 +20,20 @@ const BookType = new GraphQLObjectType({
     title: { type: GraphQLString },
     genre: { type: GraphQLString },
     owner: { type: GraphQLString },
-    pages: { type: GraphQLInt } //check this
+    pages: { type: GraphQLInt }
   })
 });
+//check how to query books by author
+const AuthorType = new GraphQLObjectType({
+  name: "Author",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    surname: { type: GraphQLString },
+    books: { type: new GraphQLList(BookType) } //check this
+  })
+});
+
 //root query setup - defines paths through u can query data
 const RootQuery = new GraphQLObjectType({
   name: "RootQueryType",
@@ -36,6 +48,18 @@ const RootQuery = new GraphQLObjectType({
         //args.id
         //use lodash lib for finding data from db, here from books array
         return _find(books, { id: args.id });
+      }
+    },
+    author: {
+      type: AuthorType,
+      //when user makes query for a book, I expect args, e.g. id property
+      args: { id: { type: GraphQLID } },
+      //when query received - use resolve function
+      resolve(parent, arg) {
+        //function to get data from DB/other src; parent - relations..
+        //args.id
+        //use lodash lib for finding data from db, here from authors array
+        return _find(authors, { id: args.id });
       }
     }
   }
