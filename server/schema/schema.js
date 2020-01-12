@@ -66,7 +66,7 @@ const BookType = new GraphQLObjectType({
       type: AuthorType,
       resolve(parent, args) {
         //parent - book here
-        console.log("parent", parent);
+        //console.log("parent in BookType", parent);
         return _.find(authors, { id: parent.authorId }); //still dummy data
       }
     },
@@ -89,10 +89,10 @@ const AuthorType = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       //resolve f to search works by author in the books array, id === this authorId
       resolve(parent, args) {
-        console.log("parent in AuthorType", parent);
+        //console.log("parent in AuthorType", parent);
         return _.filter(books, { authorId: parent.id });
       }
-    } //check this
+    }
   })
 });
 const OwnerType = new GraphQLObjectType({
@@ -101,7 +101,14 @@ const OwnerType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     surname: { type: GraphQLString },
-    books: { type: new GraphQLList(BookType) } //check this
+    books: {
+      type: new GraphQLList(BookType),
+      //resolve f to search works by author in the books array, id === this authorId
+      resolve(parent, args) {
+        //console.log("parent in OwnerType", parent);
+        return _.filter(books, { ownerId: parent.id });
+      }
+    }
   })
 });
 
@@ -139,6 +146,19 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
         return authors;
+      }
+    },
+    owner: {
+      type: OwnerType,
+      args: { id: { type: GraphQLID } },
+      resolve(parent, args) {
+        return _.find(owners, { id: args.id });
+      }
+    },
+    owners: {
+      type: new GraphQLList(OwnerType),
+      resolve(parent, args) {
+        return owners;
       }
     }
   }
