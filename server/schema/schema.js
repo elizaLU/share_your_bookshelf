@@ -9,20 +9,47 @@ const {
   GraphQLSchema,
   GraphQLInt,
   GraphQLID,
-  GraphQLList
+  GraphQLList,
+  GraphQLBoolean
 } = graphql;
 
 // dummy data
 const books = [
-  { title: "Name of the Wind", genre: "Fantasy", id: "1", authorId: "1" },
-  { title: "The Final Empire", genre: "Fantasy", id: "2", authorId: "2" },
-  { title: "The Long Earth", genre: "Sci-Fi", id: "3", authorId: "3" }
+  {
+    title: "Name of the Wind",
+    genre: "Fantasy",
+    id: "1",
+    availability: true,
+    authorId: "1",
+    ownerId: "1"
+  },
+  {
+    title: "The Final Empire",
+    genre: "Fantasy",
+    id: "2",
+    availability: true,
+    authorId: "2",
+    ownerId: "1"
+  },
+  {
+    title: "The Long Earth",
+    genre: "Sci-Fi",
+    id: "3",
+    availability: true,
+    authorId: "3",
+    ownerId: "2"
+  }
 ];
 
 const authors = [
   { name: "Patrick", surname: "Rothfuss", age: 44, id: "1" },
   { name: "Brandon", surname: "Sanderson", age: 42, id: "2" },
   { name: "Terry", surname: "Pratchett", age: 66, id: "3" }
+];
+
+const owners = [
+  { name: "Lucien", surname: "Palmboy", id: "1" },
+  { name: "Ida", surname: "Esman", id: "2" }
 ];
 
 //object types:
@@ -33,13 +60,19 @@ const BookType = new GraphQLObjectType({
     title: { type: GraphQLString },
     genre: { type: GraphQLString },
     pages: { type: GraphQLInt },
-    owner: { type: OwnerType }, //change to ownerType when defined
+    availability: { type: GraphQLBoolean },
     author: {
       type: AuthorType,
       resolve(parent, args) {
         //parent - book here
         console.log("parent", parent);
         return _.find(authors, { id: parent.authorId }); //still dummy data
+      }
+    },
+    owner: {
+      type: OwnerType,
+      resolve(parent, args) {
+        return _.find(owners, { id: parent.ownerId }); //still dummy data
       }
     }
   })
