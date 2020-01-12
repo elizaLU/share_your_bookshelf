@@ -55,6 +55,7 @@ const owners = [
 //object types:
 const BookType = new GraphQLObjectType({
   name: "Book",
+  //it has to be a function - parser calls this f whenever request includes fields from certain type
   fields: () => ({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
