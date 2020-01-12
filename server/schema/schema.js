@@ -3,7 +3,7 @@ const graphql = require("graphql");
 const _ = require("lodash");
 //1. object types
 //destructuring grabs function graphQLOT from graphql, this function takes an object as an argument
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLInt } = graphql;
 
 //object type:
 const BookType = new GraphQLObjectType({
@@ -12,7 +12,8 @@ const BookType = new GraphQLObjectType({
     id: { type: GraphQLString },
     title: { type: GraphQLString },
     genre: { type: GraphQLString },
-    owner: { type: GraphQLString }
+    owner: { type: GraphQLString },
+    pages: { type: GraphQLInt } //check this
   })
 });
 //root query setup - defines paths through u can query data
