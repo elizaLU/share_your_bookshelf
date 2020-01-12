@@ -12,6 +12,19 @@ const {
   GraphQLList
 } = graphql;
 
+// dummy data
+const books = [
+  { title: "Name of the Wind", genre: "Fantasy", id: "1", authorId: "1" },
+  { title: "The Final Empire", genre: "Fantasy", id: "2", authorId: "2" },
+  { title: "The Long Earth", genre: "Sci-Fi", id: "3", authorId: "3" }
+];
+
+const authors = [
+  { name: "Patrick", surname: "Rothfuss", age: 44, id: "1" },
+  { name: "Brandon", surname: "Sanderson", age: 42, id: "2" },
+  { name: "Terry", surname: "Pratchett", age: 66, id: "3" }
+];
+
 //object types:
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -19,13 +32,30 @@ const BookType = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLString },
     genre: { type: GraphQLString },
-    owner: { type: GraphQLString },
-    pages: { type: GraphQLInt }
+    pages: { type: GraphQLInt },
+    owner: { type: OwnerType }, //change to ownerType when defined
+    author: {
+      type: AuthorType,
+      resolve(parent, args) {
+        //parent - book here
+        console.log("parent", parent);
+        return _.find(authors, { id: parent.authorId }); //still dummy data
+      }
+    }
   })
 });
 //check how to query books by author
 const AuthorType = new GraphQLObjectType({
   name: "Author",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    surname: { type: GraphQLString },
+    works: { type: new GraphQLList(BookType) } //check this
+  })
+});
+const OwnerType = new GraphQLObjectType({
+  name: "Owner",
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
@@ -43,18 +73,18 @@ const RootQuery = new GraphQLObjectType({
       //when user makes query for a book, I expect args, e.g. id property
       args: { id: { type: GraphQLID } },
       //when query received - use resolve function
-      resolve(parent, arg) {
+      resolve(parent, args) {
         //function to get data from DB/other src; parent - relations..
         //args.id
         //use lodash lib for finding data from db, here from books array
-        return _find(books, { id: args.id });
+        return _.find(books, { id: args.id });
       }
     },
     author: {
       type: AuthorType,
       args: { id: { type: GraphQLID } },
-      resolve(parent, arg) {
-        return _find(authors, { id: args.id });
+      resolve(parent, args) {
+        return _.find(authors, { id: args.id });
       }
     }
   }
