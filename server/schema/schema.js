@@ -3,13 +3,13 @@ const graphql = require("graphql");
 const _ = require("lodash");
 //1. object types
 //destructuring grabs function graphQLOT from graphql, this function takes an object as an argument
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLInt } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLID } = graphql;
 
 //object type:
 const BookType = new GraphQLObjectType({
   name: "Book",
   fields: () => ({
-    id: { type: GraphQLString },
+    id: { type: GraphQLID },
     title: { type: GraphQLString },
     genre: { type: GraphQLString },
     owner: { type: GraphQLString },
@@ -23,7 +23,7 @@ const RootQuery = new GraphQLObjectType({
     book: {
       type: BookType,
       //when user makes query for a book, I expect args, e.g. id property
-      args: { id: { type: GraphQLString } },
+      args: { id: { type: GraphQLID } },
       //when query received - use resolve function
       resolve(parent, arg) {
         //function to get data from DB/other src; parent - relations..
