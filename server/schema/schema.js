@@ -52,13 +52,8 @@ const RootQuery = new GraphQLObjectType({
     },
     author: {
       type: AuthorType,
-      //when user makes query for a book, I expect args, e.g. id property
       args: { id: { type: GraphQLID } },
-      //when query received - use resolve function
       resolve(parent, arg) {
-        //function to get data from DB/other src; parent - relations..
-        //args.id
-        //use lodash lib for finding data from db, here from authors array
         return _find(authors, { id: args.id });
       }
     }
