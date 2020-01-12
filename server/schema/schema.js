@@ -3,7 +3,13 @@ const graphql = require("graphql");
 const _ = require("lodash");
 //1. object types
 //destructuring grabs function graphQLOT from graphql, this function takes an object as an argument
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLInt, GraphQLID } = graphql;
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLInt,
+  GraphQLID
+} = graphql;
 
 //object type:
 const BookType = new GraphQLObjectType({
