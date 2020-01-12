@@ -84,7 +84,14 @@ const AuthorType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
     surname: { type: GraphQLString },
-    works: { type: new GraphQLList(BookType) } //check this
+    works: {
+      type: new GraphQLList(BookType),
+      //resolve f to search works by author in the books array, id === this authorId
+      resolve(parent, args) {
+        console.log("parent in AuthorType", parent);
+        return _.filter(books, { authorId: parent.id });
+      }
+    } //check this
   })
 });
 const OwnerType = new GraphQLObjectType({
