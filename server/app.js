@@ -16,7 +16,7 @@ app.use(
 
 //connect to the database
 mongoose.connect(
-  "mongodb+srv://eliza32:mongoEL20@cluster0-4ohjh.mongodb.net/test?retryWrites=true&w=majority",
+  "mongodb+srv://xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx,
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
