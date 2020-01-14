@@ -33,12 +33,14 @@ const BookType = new GraphQLObjectType({
         //parent - book here
         //console.log("parent in BookType", parent);
         //return _.find(authors, { id: parent.authorId }); //still dummy data
+        return Author.findById(parent.authorId);
       }
     },
     owner: {
       type: OwnerType,
       resolve(parent, args) {
         //return _.find(owners, { id: parent.ownerId }); //still dummy data
+        return Owner.findById(parent.ownerId);
       }
     }
   })
@@ -56,6 +58,7 @@ const AuthorType = new GraphQLObjectType({
       resolve(parent, args) {
         //console.log("parent in AuthorType", parent);
         //return _.filter(books, { authorId: parent.id });
+        return Book.find({ authorId: parent.id });
       }
     }
   })
@@ -72,6 +75,7 @@ const OwnerType = new GraphQLObjectType({
       resolve(parent, args) {
         //console.log("parent in OwnerType", parent);
         //return _.filter(books, { ownerId: parent.id });
+        return Book.find({ ownerId: parent.id });
       }
     }
   })
@@ -91,13 +95,15 @@ const RootQuery = new GraphQLObjectType({
         //args.id
         //use lodash lib for finding data from db, here from books array
         //return _.find(books, { id: args.id });
+        return Book.findById(args.id);
       }
     },
     //query to return all books {  books{    title    genre  }}
     books: {
       type: new GraphQLList(BookType),
       resolve(parent, args) {
-        return books;
+        //return books
+        return Book.find({});
       }
     },
     author: {
@@ -105,12 +111,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         //return _.find(authors, { id: args.id });
+        return Author.findById(args.id);
       }
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
         // return authors;
+        return Author.find({});
       }
     },
     owner: {
@@ -118,12 +126,14 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
         //return _.find(owners, { id: args.id });
+        return Owner.findById(args.id);
       }
     },
     owners: {
       type: new GraphQLList(OwnerType),
       resolve(parent, args) {
         //return owners;
+        return Owner.find({});
       }
     }
   }
