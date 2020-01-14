@@ -4,9 +4,10 @@ In this project, on the backend, I use:
 
 1. GraphQL
 2. exress-graphql
-3. MongoDB instance on the mLab portal
+3. MongoDB instance on the mongoDB Atlas
 4. graphiql for easy test querrying in the browser
 5. lodash for easy reusable code in the project
+6. mongoose - ORM 
 
 Users of this portal can:
 
