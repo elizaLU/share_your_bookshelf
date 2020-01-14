@@ -146,7 +146,44 @@ const Mutation = new GraphQLObjectType({
           surname: args.surname
         });
         //save to the database
-       return author.save();
+        return author.save();
+      }
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        title: { type: GraphQLString },
+        genre: { type: GraphQLString },
+        availability: { type: GraphQLBoolean },
+        authorId: { type: GraphQLID },
+        ownerId: { type: GraphQLID }
+      },
+      resolve(parent, args) {
+        let book = new Book({
+          title: args.title,
+          genre: args.genre,
+          availability: args.availability,
+          authorId: args.authorId,
+          ownerId: args.ownerId
+        });
+        //save to the database
+        return book.save();
+      }
+    },
+    addOwner: {
+      type: OwnerType,
+      args: {
+        name: { type: GraphQLString },
+        surname: { type: GraphQLString }
+        //no need to add works, it will be matched from the Books
+      },
+      resolve(parent, args) {
+        let owner = new Owner({
+          name: args.name,
+          surname: args.surname
+        });
+        //save to the database
+        return owner.save();
       }
     }
   }
