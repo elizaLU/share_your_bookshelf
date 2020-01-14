@@ -13,45 +13,6 @@ const {
   GraphQLBoolean
 } = graphql;
 
-// dummy data
-const books = [
-  {
-    title: "Name of the Wind",
-    genre: "Fantasy",
-    id: "1",
-    availability: true,
-    authorId: "1",
-    ownerId: "1"
-  },
-  {
-    title: "The Final Empire",
-    genre: "Fantasy",
-    id: "2",
-    availability: true,
-    authorId: "2",
-    ownerId: "1"
-  },
-  {
-    title: "The Long Earth",
-    genre: "Sci-Fi",
-    id: "3",
-    availability: true,
-    authorId: "3",
-    ownerId: "2"
-  }
-];
-
-const authors = [
-  { name: "Patrick", surname: "Rothfuss", age: 44, id: "1" },
-  { name: "Brandon", surname: "Sanderson", age: 42, id: "2" },
-  { name: "Terry", surname: "Pratchett", age: 66, id: "3" }
-];
-
-const owners = [
-  { name: "Lucien", surname: "Palmboy", id: "1" },
-  { name: "Ida", surname: "Esman", id: "2" }
-];
-
 //object types:
 const BookType = new GraphQLObjectType({
   name: "Book",
@@ -67,13 +28,13 @@ const BookType = new GraphQLObjectType({
       resolve(parent, args) {
         //parent - book here
         //console.log("parent in BookType", parent);
-        return _.find(authors, { id: parent.authorId }); //still dummy data
+        //return _.find(authors, { id: parent.authorId }); //still dummy data
       }
     },
     owner: {
       type: OwnerType,
       resolve(parent, args) {
-        return _.find(owners, { id: parent.ownerId }); //still dummy data
+        //return _.find(owners, { id: parent.ownerId }); //still dummy data
       }
     }
   })
@@ -90,7 +51,7 @@ const AuthorType = new GraphQLObjectType({
       //resolve f to search works by author in the books array, id === this authorId
       resolve(parent, args) {
         //console.log("parent in AuthorType", parent);
-        return _.filter(books, { authorId: parent.id });
+        //return _.filter(books, { authorId: parent.id });
       }
     }
   })
@@ -106,7 +67,7 @@ const OwnerType = new GraphQLObjectType({
       //resolve f to search works by author in the books array, id === this authorId
       resolve(parent, args) {
         //console.log("parent in OwnerType", parent);
-        return _.filter(books, { ownerId: parent.id });
+        //return _.filter(books, { ownerId: parent.id });
       }
     }
   })
@@ -125,7 +86,7 @@ const RootQuery = new GraphQLObjectType({
         //function to get data from DB/other src; parent - relations..
         //args.id
         //use lodash lib for finding data from db, here from books array
-        return _.find(books, { id: args.id });
+        //return _.find(books, { id: args.id });
       }
     },
     //query to return all books {  books{    title    genre  }}
@@ -139,26 +100,26 @@ const RootQuery = new GraphQLObjectType({
       type: AuthorType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(authors, { id: args.id });
+        //return _.find(authors, { id: args.id });
       }
     },
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
-        return authors;
+       // return authors;
       }
     },
     owner: {
       type: OwnerType,
       args: { id: { type: GraphQLID } },
       resolve(parent, args) {
-        return _.find(owners, { id: args.id });
+        //return _.find(owners, { id: args.id });
       }
     },
     owners: {
       type: new GraphQLList(OwnerType),
       resolve(parent, args) {
-        return owners;
+        //return owners;
       }
     }
   }
