@@ -16,7 +16,8 @@ app.use(
 
 //connect to the database
 mongoose.connect(
-  "mongodb+srv://eliza32:mongoEL20@cluster0-4ohjh.mongodb.net/test?retryWrites=true&w=majority"
+  "mongodb+srv://eliza32:mongoEL20@cluster0-4ohjh.mongodb.net/test?retryWrites=true&w=majority",
+  { useNewUrlParser: true, useUnifiedTopology: true }
 );
 
 mongoose.connection.once("open", () => {
