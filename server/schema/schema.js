@@ -128,7 +128,7 @@ const RootQuery = new GraphQLObjectType({
     }
   }
 });
-//query example: book(id:"112"){name, genre}
+//query example: query {book(id:"112"){name, genre}}
 //in GraphQL it has to be difined what data can be mutated and how
 const Mutation = new GraphQLObjectType({
   name: "Mutation",
