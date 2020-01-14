@@ -12,6 +12,10 @@ const {
   GraphQLList,
   GraphQLBoolean
 } = graphql;
+//req mongoose models.
+const Book = require("../models/book");
+const Author = require("../models/author");
+const Owner = require("../models/owner");
 
 //object types:
 const BookType = new GraphQLObjectType({
@@ -106,7 +110,7 @@ const RootQuery = new GraphQLObjectType({
     authors: {
       type: new GraphQLList(AuthorType),
       resolve(parent, args) {
-       // return authors;
+        // return authors;
       }
     },
     owner: {
@@ -125,7 +129,31 @@ const RootQuery = new GraphQLObjectType({
   }
 });
 //query example: book(id:"112"){name, genre}
+//in GraphQL it has to be difined what data can be mutated and how
+const Mutation = new GraphQLObjectType({
+  name: "Mutation",
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: GraphQLString },
+        surname: { type: GraphQLString }
+        //no need to add works, it will be matched from the Books
+      },
+      resolve(parent, args) {
+        let author = new Author({
+          name: args.name,
+          surname: args.surname
+        });
+        //save to the database
+       return author.save();
+      }
+    }
+  }
+});
+
 //export schema, pass root query of this schema - we allow user to make such a query
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
